@@ -1,12 +1,15 @@
 #include <string>
 #include <vector>
 #include "SizeType.h"
+
 using namespace std;
 
 class Board {
     vector<vector<int>> board;
 
     public:
+        Board() = default;
+
         void createBoard(const SizeType size) {
             for (int i = 0; i < size; i++) {
                 vector<int> vec;
@@ -20,7 +23,11 @@ class Board {
         }
 
         bool loadBoard(const std::string& fileName) {
-            return true;
+            try {
+                return true;
+            } catch (exception& e) {
+                return false;
+            }
         }
 
         bool changeBoard(int PosX, int PosY, int number) {

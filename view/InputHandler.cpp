@@ -1,3 +1,18 @@
-//
-// Created by patrik on 29.10.25.
-//
+#include "../model/SizeType.h"
+
+class InputHandler {
+    public:
+        InputHandler() = default;
+        SizeType inputBoardSize() {
+            return SIX;
+        }
+
+        // TODO struct x, y, number
+        void inputPlayer() {
+
+        }
+
+        bool inputEndGame() {
+            return false;
+        }
+};

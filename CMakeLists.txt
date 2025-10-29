@@ -10,4 +10,9 @@ add_executable(mini_sudoku main.cpp
         view/Renderer.cpp
         view/InputHandler.cpp
         controller/Validator.cpp
+        model/Board.hpp
+        controller/Validator.hpp
+        view/InputHandler.hpp
+        view/Renderer.hpp
+        controller/Controller.hpp
 )
