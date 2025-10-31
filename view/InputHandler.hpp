@@ -1,10 +1,14 @@
 #pragma once
-#include "../model/SizeType.h"
+
+struct player {
+    int PosX;
+    int PosY;
+    int number;
+};
 
 class InputHandler {
 public:
-    InputHandler();
-    SizeType inputBoardSize();
+    int inputBoardSize();
     bool inputEndGame();
-    void inputPlayer();
+    player inputPlayer();
 };

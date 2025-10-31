@@ -5,14 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(mini_sudoku main.cpp
         model/Board.cpp
-        model/SizeType.h
         controller/Controller.cpp
         view/Renderer.cpp
         view/InputHandler.cpp
         controller/Validator.cpp
-        model/Board.hpp
-        controller/Validator.hpp
-        view/InputHandler.hpp
-        view/Renderer.hpp
-        controller/Controller.hpp
 )

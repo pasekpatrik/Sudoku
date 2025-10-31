@@ -1,46 +1,68 @@
-#include "../model/SizeType.h"
+#include "Controller.hpp"
+#include <iostream>
 
-#include "../model/Board.hpp"
-#include "../view/Renderer.hpp"
-#include "../view/InputHandler.hpp"
-#include "Validator.hpp"
+Controller::Controller(Board& b, Renderer& r, InputHandler& i, Validator& v)
+    : board(b), renderer(r), input(i), validator(v) {}
 
-class Controller {
-    bool loop = false;
+bool Controller::createGame() const {
+    try {
+        SizeType sizeBoard;
+        const int selection = input.inputBoardSize();
 
-    Board& board;
-    Renderer& renderer;
-    InputHandler& input;
-    Validator& validator;
+        if (!validator.isCorrectNumber(1, 3, selection)) return false;
 
-    public:
-        Controller(Board& b, Renderer& r, InputHandler& i, Validator& v)
-            : board(b), renderer(r), input(i), validator(v) {}
-
-        bool createGame() {
-            try {
-                const SizeType sizeBoard = input.inputBoardSize();
-                board.createBoard(sizeBoard);
-                // board.loadBoard("name.txt");
-                return true;
-            } catch (std::exception& e) {
-                return false;
-            }
+        switch (selection) {
+            case 1: sizeBoard = FOUR; break;
+            case 2: sizeBoard = SIX; break;
+            case 3: sizeBoard = NINE; break;
+            default: return false;
         }
 
-        void startGame() {
-            loop = true;
+        board.setBoardSize(sizeBoard);
+        board.createBoard();
+        // TODO
+        // board.loadBoard(name);
+        return true;
+    } catch (std::exception& e) {
+        return false;
+    }
+}
+
+void Controller::startGame() {
+    loop = true;
+}
+
+void Controller::endGame() {
+    loop = false;
+}
+
+void Controller::game() const {
+    if (!createGame()) return;
+
+    renderer.printWelcome();
+
+    while (loop) {
+        renderer.printBoard(board.getBoard());
+
+        if (validator.isSudokuSolved(board.getBoard())) break;
+
+        const player selection = input.inputPlayer();
+
+        if (!validator.isCorrectNumber(1, board.getBoardSize(), selection.number)) {
+            renderer.printWarning("Invalid number!");
+            continue;
         }
 
-        void endGame() {
-            loop = false;
+        if (!validator.isCorrectPosition(selection.PosX, selection.PosY, board.getBoard())) {
+            renderer.printWarning("Invalid position!");
+            continue;
         }
 
-        void game() {
-            if (!createGame()) return;
+        board.changeBoard(selection.PosX, selection.PosY, selection.number);
+    }
 
-            while (loop) {
-
-            }
-        }
-};
+    if (!input.inputEndGame()) {
+        board.deleteBoard();
+        game();
+    }
+}

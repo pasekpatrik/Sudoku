@@ -3,8 +3,7 @@
 
 class Validator {
 public:
-    Validator();
-    bool isCorrectNumber(int number);
-    bool isCorrectPosition(int posX, int posY, const Board& board);
-    bool isSudokuSolved(const Board& board);
+    bool isCorrectNumber(int from, int to, int number);
+    bool isCorrectPosition(int posX, int posY, const vector<vector<int>> &board);
+    bool isSudokuSolved(const vector<vector<int>> &board);
 };

@@ -3,6 +3,7 @@
 
 class Renderer {
 public:
-    Renderer();
     void printBoard(const std::vector<std::vector<int>>& board);
+    void printWelcome();
+    void printWarning(const std::string& message);
 };

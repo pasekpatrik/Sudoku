@@ -1,18 +1,31 @@
-#include "../model/SizeType.h"
+#include "InputHandler.hpp"
 
-class InputHandler {
-    public:
-        InputHandler() = default;
-        SizeType inputBoardSize() {
-            return SIX;
-        }
+#include <iostream>
+using namespace std;
 
-        // TODO struct x, y, number
-        void inputPlayer() {
+int InputHandler::inputBoardSize() {
+    int selection;
 
-        }
+    cout << "Select the size of the board(1. 4x4, 2. 6x6, 3. 9x9): " << endl;
+    cin >> selection;
 
-        bool inputEndGame() {
-            return false;
-        }
-};
+    return selection;
+}
+
+player InputHandler::inputPlayer() {
+    player input{};
+
+    cout << "Select the Row, Col, Number: " << endl;
+    cin >> input.PosX >> input.PosY >> input.number;
+
+    return input;
+}
+
+bool InputHandler::inputEndGame() {
+    std::string result;
+
+    cout << "Do you want end of the game? (y/n): " << endl;
+    cin >> result;
+
+    return (result == "y");
+}

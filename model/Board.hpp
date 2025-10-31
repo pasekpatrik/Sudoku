@@ -3,14 +3,17 @@
 #include <vector>
 #include <string>
 
-class Board {
-private:
-    std::vector<std::vector<int>> board;
+using namespace std;
 
+class Board {
+    vector<vector<int>> board;
+    SizeType boardSize;
 public:
-    Board();
-    void createBoard(SizeType size);
+    void createBoard();
     bool loadBoard(const std::string& fileName);
     bool changeBoard(int posX, int posY, int value);
     bool deleteBoard();
+    vector<vector<int>> getBoard();
+    SizeType getBoardSize();
+    void setBoardSize(SizeType size);
 };
