@@ -17,6 +17,6 @@ void Renderer::printWelcome() {
     std::cout << "Begin of Sudoku game!" << std::endl;
 }
 
-void Renderer::printWarning(const std::string& message) {
+void Renderer::print(const std::string& message) {
     std::cout << message << std::endl;
 }

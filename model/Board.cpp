@@ -3,7 +3,10 @@
 #include <fstream>
 #include "SizeType.h"
 #include "Board.hpp"
+
+#include <cstring>
 #include <filesystem>
+#include <iostream>
 
 using namespace std;
 
@@ -26,18 +29,25 @@ bool Board::changeBoard(const int posX, const int posY, const int value) {
 
 bool Board::loadBoard(const std::string &filePath) {
     try {
-        ifstream file(filePath);
+        ifstream file("../" + filePath);
 
-        if (!file.is_open()) return false;
+        if (!file.is_open()) {
+            std::cerr << "File is not open!" << std::endl;
+            std::cout << "Reason: " << std::strerror(errno) << std::endl;
+            std::cout << "Trying to open: " << filesystem::absolute(filePath) << std::endl;
 
-        int PosX, PosY, value;
-        while (file >> PosX >> PosY >> value) {
-            changeBoard(PosX, PosY, value);
+            return false;
+        }
+
+        int Row, Col, value;
+        while (file >> Row >> Col >> value) {
+            changeBoard(Row, Col, value);
         }
 
         file.close();
         return true;
-    } catch (exception &e) {
+    } catch (exception const &e) {
+        std::cerr << e.what() << std::endl;
         return false;
     }
 }

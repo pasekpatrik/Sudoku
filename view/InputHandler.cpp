@@ -16,7 +16,7 @@ player InputHandler::inputPlayer() {
     player input{};
 
     cout << "Select the Row, Col, Number: " << endl;
-    cin >> input.PosX >> input.PosY >> input.number;
+    cin >> input.row >> input.col >> input.number;
 
     return input;
 }

@@ -7,10 +7,14 @@ Controller::Controller(Board& b, Renderer& r, InputHandler& i, Validator& v)
 bool Controller::createGame() const {
     try {
         SizeType sizeBoard;
-        const int selection = input.inputBoardSize();
+        int selection;
         std::string fileName;
 
-        if (!validator.isCorrectNumber(1, 3, selection)) return false;
+        while (true) {
+            selection = input.inputBoardSize();
+            if (validator.isCorrectNumber(1, 3, selection)) break;
+            renderer.print("Invalid choice!");
+        }
 
         switch (selection) {
             case 1:
@@ -35,6 +39,7 @@ bool Controller::createGame() const {
 
         return true;
     } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
         return false;
     }
 }
@@ -47,8 +52,11 @@ void Controller::endGame() {
     loop = false;
 }
 
-void Controller::game() const {
-    if (!createGame()) return;
+void Controller::game() {
+    if (!createGame()) {
+        std::cerr << "Error when creating game!" << std::endl;
+        return;
+    }
 
     renderer.printWelcome();
 
@@ -59,20 +67,20 @@ void Controller::game() const {
 
         const player selection = input.inputPlayer();
 
-        if (!validator.isCorrectNumber(1, board.getBoardSize(), selection.number) |
-            !validator.isCorrectNumber(1, board.getBoardSize(), selection.PosX) |
-            !validator.isCorrectNumber(1, board.getBoardSize(), selection.PosY)
+        if (!validator.isCorrectNumber(1, board.getBoardSize(), selection.number) ||
+            !validator.isCorrectNumber(1, board.getBoardSize(), selection.row) ||
+            !validator.isCorrectNumber(1, board.getBoardSize(), selection.col)
             ) {
-            renderer.printWarning("Invalid number!");
+            renderer.print("Invalid number!");
             continue;
         }
 
-        if (!validator.isCorrectPosition(selection.PosX, selection.PosY, board.getBoard())) {
-            renderer.printWarning("Invalid position!");
+        if (!validator.isCorrectPosition(selection.row, selection.col, board.getBoard(), selection.number)) {
+            renderer.print("Invalid position!");
             continue;
         }
 
-        board.changeBoard(selection.PosX, selection.PosY, selection.number);
+        board.changeBoard(selection.row, selection.col, selection.number);
     }
 
     if (!input.inputEndGame()) {

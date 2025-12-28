@@ -15,5 +15,5 @@ public:
     Controller(Board& b, Renderer& r, InputHandler& i, Validator& v);
     void startGame();
     void endGame();
-    void game() const;
+    void game();
 };

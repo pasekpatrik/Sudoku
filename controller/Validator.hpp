@@ -4,6 +4,6 @@
 class Validator {
 public:
     bool isCorrectNumber(int from, int to, int number);
-    bool isCorrectPosition(int posX, int posY, const vector<vector<int>> &board);
+    bool isCorrectPosition(int row, int col, const vector<vector<int>> &board, int number);
     bool isSudokuSolved(const vector<vector<int>> &board);
 };

@@ -1,8 +1,8 @@
 #pragma once
 
 struct player {
-    int PosX;
-    int PosY;
+    int row;
+    int col;
     int number;
 };
 
