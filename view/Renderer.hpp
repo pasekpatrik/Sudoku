@@ -1,10 +1,10 @@
 #pragma once
-#include <vector>
 #include <string>
+#include "Board.hpp"
 
 class Renderer {
 public:
-    void printBoard(const std::vector<std::vector<int>>& board);
+    void printBoard(Board board);
     void printWelcome();
     void print(const std::string& message);
 };

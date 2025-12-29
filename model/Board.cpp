@@ -8,8 +8,6 @@
 #include <filesystem>
 #include <iostream>
 
-using namespace std;
-
 void Board::createBoard() {
     for (int i = 0; i < boardSize; i++) {
         vector<int> vec;
@@ -67,4 +65,27 @@ SizeType Board::getBoardSize() {
 
 void Board::setBoardSize(const SizeType size) {
     boardSize = size;
+}
+
+int Board::getBlockRow() {
+    switch (boardSize) {
+        case 4:
+            return 2;
+        case 6:
+            return 3;
+        case 9:
+            return 3;
+        default: throw std::runtime_error("Unsupported board size");
+    }
+}
+int Board::getBlockCol() {
+    switch (boardSize) {
+        case 4:
+            return 2;
+        case 6:
+            return 2;
+        case 9:
+            return 3;
+        default: throw std::runtime_error("Unsupported board size");
+    }
 }

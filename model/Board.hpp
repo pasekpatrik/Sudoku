@@ -16,4 +16,6 @@ public:
     vector<vector<int>> getBoard();
     SizeType getBoardSize();
     void setBoardSize(SizeType size);
+    int getBlockRow();
+    int getBlockCol();
 };

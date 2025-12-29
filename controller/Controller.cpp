@@ -61,7 +61,7 @@ void Controller::game() {
     renderer.printWelcome();
 
     while (loop) {
-        renderer.printBoard(board.getBoard());
+        renderer.printBoard(board);
 
         if (validator.isSudokuSolved(board.getBoard())) break;
 
@@ -75,7 +75,7 @@ void Controller::game() {
             continue;
         }
 
-        if (!validator.isCorrectPosition(selection.row, selection.col, board.getBoard(), selection.number)) {
+        if (!validator.isCorrectPosition(selection.row, selection.col, board, selection.number)) {
             renderer.print("Invalid position!");
             continue;
         }

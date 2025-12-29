@@ -11,9 +11,6 @@ add_executable(mini_sudoku
         controller/Validator.cpp
         view/Renderer.cpp
         view/InputHandler.cpp
-        resource/sudoku1.txt
-        resource/sudoku2.txt
-        resource/sudoku3.txt
 )
 
 target_include_directories(mini_sudoku PRIVATE

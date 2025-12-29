@@ -4,23 +4,28 @@ bool Validator::isCorrectNumber(int from, int to, int number) {
     return number >= from && number <= to;
 }
 
-bool Validator::isCorrectPosition(int row, int col, const vector<vector<int>>& board, int number) {
-    if (board[row - 1][col - 1] != 0) return false;
+bool Validator::isCorrectPosition(int row, int col, Board board, int number) {
+    const std::vector<std::vector<int>> boardVec = board.getBoard();
 
-    for (const int &rowNumer : board[row - 1]) {
+    if (boardVec[row - 1][col - 1] != 0) return false;
+
+    for (const int &rowNumer : boardVec[row - 1]) {
         if (number == rowNumer) return false;
     }
 
-    for (const vector<int>& rowBoard : board) {
+    for (const vector<int>& rowBoard : boardVec) {
         if (rowBoard[col - 1] == number) return false;
     }
 
-    const int square_row = (row / 3) * 3;
-    const int square_col = (col / 3) * 3;
-    
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            if (board[square_row + i][square_col + j] == number) return false;
+    const int row_size = board.getBlockRow();
+    const int col_size = board.getBlockCol();
+
+    const int square_row = (row / row_size) * row_size;
+    const int square_col = (col / col_size) * col_size;
+
+    for (int i = 0; i < row_size; i++) {
+        for (int j = 0; j < col_size; j++) {
+            if (boardVec[square_row + i][square_col + j] == number) return false;
         }
     }
 
