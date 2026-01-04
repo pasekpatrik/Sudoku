@@ -4,33 +4,37 @@ bool Validator::isCorrectNumber(int from, int to, int number) {
     return number >= from && number <= to;
 }
 
-bool Validator::isCorrectPosition(int row, int col, Board board, int number) {
-    const std::vector<std::vector<int>> boardVec = board.getBoard();
+bool Validator::isCorrectPosition(int row, int col, const Board& board, int number) {
+    const auto& boardVec = board.getBoard();
 
-    if (boardVec[row - 1][col - 1] != 0) return false;
+    int size = board.getBoardSize();
+    if (row < 0 || row >= size || col < 0 || col >= size) return false;
 
-    for (const int &rowNumer : boardVec[row - 1]) {
-        if (number == rowNumer) return false;
+    if (boardVec[row][col] != 0) return false;
+
+    for (int c = 0; c < size; c++) {
+        if (boardVec[row][c] == number) return false;
     }
 
-    for (const vector<int>& rowBoard : boardVec) {
-        if (rowBoard[col - 1] == number) return false;
+    for (int r = 0; r < size; r++) {
+        if (boardVec[r][col] == number) return false;
     }
 
-    const int row_size = board.getBlockRow();
-    const int col_size = board.getBlockCol();
+    int blockRows = board.getBlockRow();
+    int blockCols = board.getBlockCol();
 
-    const int square_row = (row / row_size) * row_size;
-    const int square_col = (col / col_size) * col_size;
+    int startRow = (row / blockRows) * blockRows;
+    int startCol = (col / blockCols) * blockCols;
 
-    for (int i = 0; i < row_size; i++) {
-        for (int j = 0; j < col_size; j++) {
-            if (boardVec[square_row + i][square_col + j] == number) return false;
+    for (int r = 0; r < blockRows; r++) {
+        for (int c = 0; c < blockCols; c++) {
+            if (boardVec[startRow + r][startCol + c] == number) return false;
         }
     }
 
     return true;
 }
+
 
 bool Validator::isSudokuSolved(const std::vector<std::vector<int>>& board) {
    for (const std::vector<int>& row : board) {

@@ -1,42 +1,61 @@
 #include "Renderer.hpp"
 #include <iostream>
-#include <vector>
 
-void Renderer::printBoard(Board board) {
-   for (int i = 0; i < board.getBoardSize(); i++) {
-       if (i % board.getBlockCol() == 0) {
-           for (int j = 0; j < board.getBoardSize() * 2 + board.getBlockCol() * 2 + 1; j++) {
-               std::cout << "-";
-           }
-           std::cout << std::endl;
-       }
+void Renderer::render(const Board& board, int cursorRow, int cursorCol) {
 
-       for (int j = 0; j < board.getBoard()[i].size(); j++) {
-           if (j % board.getBlockRow() == 0) {
-               std::cout<< "| ";
-           }
+    std::cout << "\033[H\033[J";
 
-           if (board.getBoard()[i][j] != 0) {
-               std::cout << board.getBoard()[i][j] << " ";
-           } else {
-               std::cout << ". ";
-           }
-       }
+    int size = board.getBoardSize();
+    int blockRows = board.getBlockRow();
+    int blockCols = board.getBlockCol();
+    const auto& grid = board.getBoard();
 
-       std::cout << "|" << std::endl;
-   }
+    auto printHorizontalLine = [&]() {
+        int lineLength = size * 2 + (size / blockCols) * 2 + 1;
+        for (int j = 0; j < lineLength; j++) {
+            std::cout << "-";
+        }
+        std::cout << "\r\n";
+    };
 
-    for (int j = 0; j < board.getBoardSize() * 2 + board.getBlockCol() * 2 + 1; j++) {
-        std::cout << "-";
+    for (int r = 0; r < size; r++) {
+
+        if (r % blockRows == 0)
+            printHorizontalLine();
+
+        for (int c = 0; c < size; c++) {
+
+            if (c % blockCols == 0)
+                std::cout << "| ";
+
+            bool isCursor = (r == cursorRow && c == cursorCol);
+
+            if (isCursor)
+                std::cout << "\033[43m";
+
+            if (grid[r][c] != 0)
+                std::cout << grid[r][c] << " ";
+            else
+                std::cout << ". ";
+
+            if (isCursor)
+                std::cout << "\033[0m";
+        }
+
+        std::cout << "|\r\n";
     }
 
-    std::cout << std::endl;
+    printHorizontalLine();
+
+    std::cout << std::flush;
 }
 
 void Renderer::printWelcome() {
-    std::cout << "Begin of Sudoku game!" << std::endl;
+    std::cout << "Begin of Sudoku game!\r\n";
+    std::cout << std::flush;
 }
 
 void Renderer::print(const std::string& message) {
-    std::cout << message << std::endl;
+    std::cout << message << "\r\n";
+    std::cout << std::flush;
 }

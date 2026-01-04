@@ -11,11 +11,11 @@ class Board {
 public:
     void createBoard();
     bool loadBoard(const std::string& filePath);
-    bool changeBoard(int posX, int posY, int value);
+    bool changeBoard(int row, int col, int value);
     bool deleteBoard();
-    vector<vector<int>> getBoard();
-    SizeType getBoardSize();
+    vector<vector<int>> getBoard() const;
+    SizeType getBoardSize() const;
     void setBoardSize(SizeType size);
-    int getBlockRow();
-    int getBlockCol();
+    int getBlockRow() const;
+    int getBlockCol() const;
 };

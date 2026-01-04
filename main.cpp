@@ -1,12 +1,13 @@
 #include "controller/Controller.hpp"
-
 #include "model/Board.hpp"
-
 #include "controller/Validator.hpp"
-
 #include "view/Renderer.hpp"
-
 #include "view/InputHandler.hpp"
+#include "view/InputHandlerRaw.hpp"
+#include "view/TerminalRawMode.hpp"
+
+#include <termios.h>
+#include <unistd.h>
 
 #include <iostream>
 
@@ -31,8 +32,16 @@ int main(int argc, char* argv[]) {
     Validator validator;
     Renderer renderer;
     InputHandler inputHandler;
+    InputHandlerRaw inputHandlerRaw;
 
-    Controller controller(board, renderer, inputHandler, validator);
+    Controller controller(board, renderer, inputHandler, inputHandlerRaw, validator);
+
+    if (!controller.createGame()) {
+        std::cerr << "Error when creating game!" << std::endl;
+        return 1;
+    }
+
+    TerminalRawMode terminalRawMode;
 
     controller.startGame();
     controller.game();

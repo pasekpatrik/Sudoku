@@ -20,8 +20,8 @@ void Board::createBoard() {
     }
 }
 
-bool Board::changeBoard(const int posX, const int posY, const int value) {
-    board[posX - 1][posY - 1] = value;
+bool Board::changeBoard(const int row, const int col, const int value) {
+    board[row][col] = value;
     return true;
 }
 
@@ -55,11 +55,11 @@ bool Board::deleteBoard() {
     return true;
 }
 
-std::vector<std::vector<int>> Board::getBoard() {
+std::vector<std::vector<int>> Board::getBoard() const {
     return board;
 }
 
-SizeType Board::getBoardSize() {
+SizeType Board::getBoardSize() const {
     return boardSize;
 }
 
@@ -67,23 +67,23 @@ void Board::setBoardSize(const SizeType size) {
     boardSize = size;
 }
 
-int Board::getBlockRow() {
+int Board::getBlockRow() const {
     switch (boardSize) {
         case 4:
             return 2;
         case 6:
-            return 3;
+            return 2;
         case 9:
             return 3;
         default: throw std::runtime_error("Unsupported board size");
     }
 }
-int Board::getBlockCol() {
+int Board::getBlockCol() const {
     switch (boardSize) {
         case 4:
             return 2;
         case 6:
-            return 2;
+            return 3;
         case 9:
             return 3;
         default: throw std::runtime_error("Unsupported board size");

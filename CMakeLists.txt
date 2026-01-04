@@ -11,6 +11,9 @@ add_executable(mini_sudoku
         controller/Validator.cpp
         view/Renderer.cpp
         view/InputHandler.cpp
+        view/TerminalRawMode.hpp
+        view/InputHandlerRaw.cpp
+        view/InputHandlerRaw.hpp
 )
 
 target_include_directories(mini_sudoku PRIVATE
