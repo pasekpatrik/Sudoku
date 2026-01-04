@@ -1,8 +1,8 @@
 #include "Controller.hpp"
 #include <iostream>
 
-Controller::Controller(Board& b, Renderer& r, InputHandler& i, Validator& v)
-    : board(b), renderer(r), input(i), validator(v) {}
+Controller::Controller(Board& b, Renderer& r, InputHandler& menu, InputHandlerRaw& game, Validator& v)
+    : board(b), renderer(r), menuInput(menu), gameInput(game), validator(v) {}
 
 bool Controller::createGame() const {
     try {
@@ -11,33 +11,23 @@ bool Controller::createGame() const {
         std::string fileName;
 
         while (true) {
-            selection = input.inputBoardSize();
+            selection = menuInput.inputBoardSize();
             if (validator.isCorrectNumber(1, 3, selection)) break;
             renderer.print("Invalid choice!");
         }
 
         switch (selection) {
-            case 1:
-                sizeBoard = FOUR;
-                fileName = "sudoku1.txt";
-                break;
-            case 2:
-                sizeBoard = SIX;
-                fileName = "sudoku2.txt";
-                break;
-            case 3:
-                sizeBoard = NINE;
-                fileName = "sudoku3.txt";
-                break;
+            case 1: sizeBoard = FOUR; fileName = "sudoku1.txt"; break;
+            case 2: sizeBoard = SIX;  fileName = "sudoku2.txt"; break;
+            case 3: sizeBoard = NINE; fileName = "sudoku3.txt"; break;
             default: return false;
         }
 
         board.setBoardSize(sizeBoard);
         board.createBoard();
 
-        if (!board.loadBoard("resource/" + fileName)) return false;
+        return board.loadBoard("resource/" + fileName);
 
-        return true;
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         return false;
@@ -52,39 +42,55 @@ void Controller::endGame() {
     loop = false;
 }
 
-void Controller::game() {
-    if (!createGame()) {
-        std::cerr << "Error when creating game!" << std::endl;
-        return;
-    }
+void Controller::moveCursor(Key key) {
+    int size = board.getBoardSize();
 
+    switch (key) {
+        case Key::Up:    if (cursorRow > 0) cursorRow--; break;
+        case Key::Down:  if (cursorRow < size - 1) cursorRow++; break;
+        case Key::Left:  if (cursorCol > 0) cursorCol--; break;
+        case Key::Right: if (cursorCol < size - 1) cursorCol++; break;
+        default: break;
+    }
+}
+
+void Controller::placeNumber(int number) {
+    if (validator.isCorrectPosition(cursorRow + 1, cursorCol + 1, board, number)) {
+        board.changeBoard(cursorRow + 1, cursorCol + 1, number);
+    }
+}
+
+void Controller::game() {
     renderer.printWelcome();
 
     while (loop) {
-        renderer.printBoard(board);
-
-        if (validator.isSudokuSolved(board.getBoard())) break;
-
-        const player selection = input.inputPlayer();
-
-        if (!validator.isCorrectNumber(1, board.getBoardSize(), selection.number) ||
-            !validator.isCorrectNumber(1, board.getBoardSize(), selection.row) ||
-            !validator.isCorrectNumber(1, board.getBoardSize(), selection.col)
-            ) {
-            renderer.print("Invalid number!");
-            continue;
+        if (validator.isSudokuSolved(board.getBoard())) {
+            loop = false;
+            break;
         }
 
-        if (!validator.isCorrectPosition(selection.row, selection.col, board, selection.number)) {
-            renderer.print("Invalid position!");
-            continue;
+        renderer.render(board, cursorRow, cursorCol);
+
+        InputEvent ev = gameInput.readKey();
+
+        switch (ev.key) {
+            case Key::Up:
+            case Key::Down:
+            case Key::Left:
+            case Key::Right:
+                moveCursor(ev.key);
+                break;
+
+            case Key::Number:
+                placeNumber(ev.number);
+                break;
+
+            case Key::Quit:
+                loop = false;
+                break;
+
+            default:
+                break;
         }
-
-        board.changeBoard(selection.row, selection.col, selection.number);
-    }
-
-    if (!input.inputEndGame()) {
-        board.deleteBoard();
-        game();
     }
 }

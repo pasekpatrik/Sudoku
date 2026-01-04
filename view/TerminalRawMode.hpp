@@ -8,13 +8,15 @@
 class TerminalRawMode {
 public:
     TerminalRawMode() {
-
         if (tcgetattr(STDIN_FILENO, &orig_) == -1) {
             throw std::runtime_error("tcgetattr failed");
         }
 
         raw_ = orig_;
         cfmakeraw(&raw_);
+
+        raw_.c_cc[VMIN]  = 1;
+        raw_.c_cc[VTIME] = 0;
 
         if (tcsetattr(STDIN_FILENO, TCSANOW, &raw_) == -1) {
             throw std::runtime_error("tcsetattr failed");

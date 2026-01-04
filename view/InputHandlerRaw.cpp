@@ -1,43 +1,36 @@
 #include "InputHandlerRaw.hpp"
 
-#include <termios.h>
 #include <unistd.h>
 
 InputEvent InputHandlerRaw::readKey() {
     unsigned char c;
-    read(STDIN_FILENO, &c, 1);
+
+    ssize_t n = read(STDIN_FILENO, &c, 1);
+    if (n <= 0)
+        return {Key::Unknown};
 
     if (c == 27) {
         unsigned char seq[2];
-        read(STDIN_FILENO, &seq[0], 1);
-        read(STDIN_FILENO, &seq[1], 1);
+
+        if (read(STDIN_FILENO, &seq[0], 1) <= 0) return {Key::Unknown};
+        if (read(STDIN_FILENO, &seq[1], 1) <= 0) return {Key::Unknown};
 
         if (seq[0] == '[') {
             switch (seq[1]) {
-                case 'A': return {Key::Up};
-                case 'B': return {Key::Down};
-                case 'C': return {Key::Right};
-                case 'D': return {Key::Left};
+            case 'A': return {Key::Up};
+            case 'B': return {Key::Down};
+            case 'C': return {Key::Right};
+            case 'D': return {Key::Left};
             }
         }
         return {Key::Unknown};
     }
 
-    if (c >= '1' && c <= '9') {
+    if (c >= '1' && c <= '9')
         return {Key::Number, c - '0'};
-    }
 
-    if (c == 127) {
-        return {Key::Delete};
-    }
-
-    if (c == '\n' || c == '\r') {
-        return {Key::Confirm};
-    }
-
-    if (c == 'q') {
+    if (c == 'q' || c == 'Q')
         return {Key::Quit};
-    }
 
     return {Key::Unknown};
 }
