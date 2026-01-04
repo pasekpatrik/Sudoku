@@ -55,8 +55,10 @@ void Controller::moveCursor(Key key) {
 }
 
 void Controller::placeNumber(int number) {
-    if (validator.isCorrectPosition(cursorRow + 1, cursorCol + 1, board, number)) {
-        board.changeBoard(cursorRow + 1, cursorCol + 1, number);
+    if (!validator.isCorrectNumber(1, board.getBoardSize(), number)) return;
+
+    if (validator.isCorrectPosition(cursorRow, cursorCol, board, number)) {
+        board.changeBoard(cursorRow, cursorCol, number);
     }
 }
 
@@ -64,12 +66,13 @@ void Controller::game() {
     renderer.printWelcome();
 
     while (loop) {
+        renderer.render(board, cursorRow, cursorCol);
+
         if (validator.isSudokuSolved(board.getBoard())) {
             loop = false;
             break;
+            // TODO new game
         }
-
-        renderer.render(board, cursorRow, cursorCol);
 
         InputEvent ev = gameInput.readKey();
 

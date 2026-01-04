@@ -28,7 +28,6 @@ int main(int argc, char* argv[]) {
         }
     }
 
-
     Board board;
     Validator validator;
     Renderer renderer;
@@ -39,7 +38,7 @@ int main(int argc, char* argv[]) {
 
     if (!controller.createGame()) {
         std::cerr << "Error when creating game!" << std::endl;
-        return 0;
+        return 1;
     }
 
     TerminalRawMode terminalRawMode;
