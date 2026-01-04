@@ -29,7 +29,7 @@ void Renderer::printBoard(Board board) {
     for (int j = 0; j < board.getBoardSize() * 2 + board.getBlockCol() * 2 + 1; j++) {
         std::cout << "-";
     }
-    
+
     std::cout << std::endl;
 }
 
