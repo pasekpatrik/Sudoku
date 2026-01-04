@@ -4,7 +4,7 @@
 
 class Renderer {
 public:
-    void printBoard(Board board);
+    void render(Board board, int cursorRow, int cursorCol);
     void printWelcome();
     void print(const std::string& message);
 };

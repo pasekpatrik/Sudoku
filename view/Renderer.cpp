@@ -1,42 +1,61 @@
 #include "Renderer.hpp"
 #include <iostream>
-#include <vector>
 
-void Renderer::printBoard(Board board) {
-   for (int i = 0; i < board.getBoardSize(); i++) {
-       if (i % board.getBlockCol() == 0) {
-           for (int j = 0; j < board.getBoardSize() * 2 + board.getBlockCol() * 2 + 1; j++) {
-               std::cout << "-";
-           }
-           std::cout << std::endl;
-       }
+void Renderer::render(Board board, int cursorRow, int cursorCol) {
 
-       for (int j = 0; j < board.getBoard()[i].size(); j++) {
-           if (j % board.getBlockRow() == 0) {
-               std::cout<< "| ";
-           }
+    std::cout << "\033[2J\033[H";
 
-           if (board.getBoard()[i][j] != 0) {
-               std::cout << board.getBoard()[i][j] << " ";
-           } else {
-               std::cout << ". ";
-           }
-       }
+    int size = board.getBoardSize();
+    int blockRows = board.getBlockRow();
+    int blockCols = board.getBlockCol();
+    const auto& grid = board.getBoard();
 
-       std::cout << "|" << std::endl;
-   }
+    // Horní oddělovací čára
+    auto printHorizontalLine = [&]() {
+        for (int j = 0; j < size * 2 + blockCols * 2 + 1; j++) {
+            std::cout << "-";
+        }
+        std::cout << "\n";
+    };
 
-    for (int j = 0; j < board.getBoardSize() * 2 + board.getBlockCol() * 2 + 1; j++) {
-        std::cout << "-";
+    for (int r = 0; r < size; r++) {
+        if (r % blockCols == 0) {
+            printHorizontalLine();
+        }
+
+        for (int c = 0; c < size; c++) {
+
+            if (c % blockRows == 0) {
+                std::cout << "| ";
+            }
+
+            bool isCursor = (r == cursorRow && c == cursorCol);
+
+            if (isCursor) {
+                std::cout << "\033[43m"; // žluté pozadí
+            }
+
+            if (grid[r][c] != 0) {
+                std::cout << grid[r][c] << " ";
+            } else {
+                std::cout << ". ";
+            }
+
+            if (isCursor) {
+                std::cout << "\033[0m"; // reset barev
+            }
+        }
+
+        std::cout << "|\n";
     }
 
-    std::cout << std::endl;
+    printHorizontalLine();
 }
 
 void Renderer::printWelcome() {
-    std::cout << "Begin of Sudoku game!" << std::endl;
+    std::cout << "Begin of Sudoku game!\n";
 }
 
 void Renderer::print(const std::string& message) {
-    std::cout << message << std::endl;
+    std::cout << message << "\n";
 }
