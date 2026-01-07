@@ -6,24 +6,26 @@
 #include "view/InputHandlerRaw.hpp"
 #include "view/TerminalRawMode.hpp"
 
-#include <termios.h>
-#include <unistd.h>
-
 #include <iostream>
 
 int main(int argc, char* argv[]) {
-
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "--help") {
-            std::cout << "Sudoku hra v textovem rezimu\n\n"
-                      << "Pouziti:\n"
-                      << "  ./sudoku [--help]\n\n"
-                      << "Ovládání:\n"
-                      << "  - Po spusteni vyber velikost desky (4x4, 6x6, 9x9)\n"
-                      << "  - Tahy zadavej jako: cislo radek sloupec\n"
-                      << "  - Program kontroluje validitu tahu\n"
-                      << "  - Hra konci po vyreseni sudoku nebo volbou ukonceni\n";
+            std::cout
+                << "Sudoku – terminalova verze hry\n\n"
+                << "Pouziti:\n"
+                << "  ./sudoku [--help]\n\n"
+                << "Popis:\n"
+                << "  Interaktivni Sudoku hra v textovem terminalu s ovladanim pomoci klavesnice.\n\n"
+                << "Ovládání:\n"
+                << "  - Sipky: pohyb kurzoru po herni desce\n"
+                << "  - Cisla 1–9: vlozeni hodnoty do vybraneho pole\n"
+                << "  - q: ukonceni hry\n\n"
+                << "Prubeh hry:\n"
+                << "  - Po spusteni vyber velikost desky (4x4, 6x6, 9x9)\n"
+                << "  - Program automaticky kontroluje validitu tahu\n"
+                << "  - Hra konci po vyplneni cele desky nebo stiskem 'q'\n";
             return 0;
         }
     }

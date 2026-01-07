@@ -70,8 +70,8 @@ void Controller::game() {
 
         if (validator.isSudokuSolved(board.getBoard())) {
             loop = false;
+            renderer.print("Sudoku is end!");
             break;
-            // TODO new game
         }
 
         InputEvent ev = gameInput.readKey();
