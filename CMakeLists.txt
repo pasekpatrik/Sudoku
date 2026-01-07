@@ -21,3 +21,22 @@ target_include_directories(mini_sudoku PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/controller
         ${CMAKE_CURRENT_SOURCE_DIR}/view
 )
+
+enable_testing()
+
+add_executable(sudoku_tests
+        tests/test.cpp
+        model/Board.cpp
+        controller/Validator.cpp
+        view/Renderer.cpp
+        includes/catch.h
+)
+
+target_include_directories(sudoku_tests
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes
+        ${CMAKE_CURRENT_SOURCE_DIR}/model
+        ${CMAKE_CURRENT_SOURCE_DIR}/controller
+        ${CMAKE_CURRENT_SOURCE_DIR}/view
+)
+
+add_test(NAME SudokuTests COMMAND sudoku_tests)

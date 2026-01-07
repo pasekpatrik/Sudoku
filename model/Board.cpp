@@ -27,7 +27,7 @@ bool Board::changeBoard(const int row, const int col, const int value) {
 
 bool Board::loadBoard(const std::string &filePath) {
     try {
-        ifstream file("../" + filePath);
+        ifstream file(filePath);
 
         if (!file.is_open()) {
             std::cerr << "File is not open!" << std::endl;

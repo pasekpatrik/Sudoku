@@ -26,7 +26,7 @@ bool Controller::createGame() const {
         board.setBoardSize(sizeBoard);
         board.createBoard();
 
-        return board.loadBoard("resource/" + fileName);
+        return board.loadBoard("../resource/" + fileName);
 
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
