@@ -1,35 +1,14 @@
-#ifndef TERMINAL_RAW_MODE_HPP
-#define TERMINAL_RAW_MODE_HPP
+#ifndef TERMINAL_HPP
+#define TERMINAL_HPP
 
-#include <termios.h>
-#include <unistd.h>
-#include <stdexcept>
-
-class TerminalRawMode {
-public:
-    TerminalRawMode() {
-        if (tcgetattr(STDIN_FILENO, &orig_) == -1) {
-            throw std::runtime_error("tcgetattr failed");
-        }
-
-        raw_ = orig_;
-        cfmakeraw(&raw_);
-
-        raw_.c_cc[VMIN]  = 1;
-        raw_.c_cc[VTIME] = 0;
-
-        if (tcsetattr(STDIN_FILENO, TCSANOW, &raw_) == -1) {
-            throw std::runtime_error("tcsetattr failed");
-        }
+inline void set_raw(const bool set) {
+    if (set) {
+        system("stty raw");
+        system("stty -echo");
+    } else {
+        system("stty -raw");
+        system("stty echo");
     }
-
-    ~TerminalRawMode() {
-        tcsetattr(STDIN_FILENO, TCSANOW, &orig_);
-    }
-
-private:
-    termios orig_;
-    termios raw_;
-};
+}
 
 #endif

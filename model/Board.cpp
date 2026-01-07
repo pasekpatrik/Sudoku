@@ -5,7 +5,6 @@
 #include "Board.hpp"
 
 #include <cstring>
-#include <filesystem>
 #include <iostream>
 
 void Board::createBoard() {
@@ -32,7 +31,6 @@ bool Board::loadBoard(const std::string &filePath) {
         if (!file.is_open()) {
             std::cerr << "File is not open!" << std::endl;
             std::cout << "Reason: " << std::strerror(errno) << std::endl;
-            std::cout << "Trying to open: " << filesystem::absolute(filePath) << std::endl;
 
             return false;
         }
@@ -78,6 +76,7 @@ int Board::getBlockRow() const {
         default: throw std::runtime_error("Unsupported board size");
     }
 }
+
 int Board::getBlockCol() const {
     switch (boardSize) {
         case 4:

@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    TerminalRawMode terminalRawMode;
+    set_raw(true);
 
     controller.startGame();
     controller.game();

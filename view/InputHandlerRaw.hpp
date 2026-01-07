@@ -1,5 +1,4 @@
 #pragma once
-#include <unistd.h>
 
 enum class Key {
     Up,

@@ -1,22 +1,19 @@
 #include "InputHandlerRaw.hpp"
-
-#include <unistd.h>
+#include <iostream>
 
 InputEvent InputHandlerRaw::readKey() {
-    unsigned char c;
-
-    ssize_t n = read(STDIN_FILENO, &c, 1);
-    if (n <= 0)
+    char c;
+    if (!std::cin.get(c))
         return {Key::Unknown};
 
     if (c == 27) {
-        unsigned char seq[2];
+        char seq1, seq2;
 
-        if (read(STDIN_FILENO, &seq[0], 1) <= 0) return {Key::Unknown};
-        if (read(STDIN_FILENO, &seq[1], 1) <= 0) return {Key::Unknown};
+        if (!std::cin.get(seq1)) return {Key::Unknown};
+        if (!std::cin.get(seq2)) return {Key::Unknown};
 
-        if (seq[0] == '[') {
-            switch (seq[1]) {
+        if (seq1 == '[') {
+            switch (seq2) {
             case 'A': return {Key::Up};
             case 'B': return {Key::Down};
             case 'C': return {Key::Right};
