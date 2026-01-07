@@ -48,6 +48,8 @@ int main(int argc, char* argv[]) {
 
     controller.startGame();
     controller.game();
+    
+    set_raw(false);
 
     return 0;
 }
